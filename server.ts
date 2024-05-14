@@ -1,4 +1,5 @@
 import { Application, Router } from "https://deno.land/x/oak@v16.0.0/mod.ts";
+import { oakCors } from 'https://deno.land/x/oak_cors@v1.2.2/mod.ts'
 
 const kv = await Deno.openKv();
 const router = new Router();
@@ -53,6 +54,7 @@ router.post("/setnewhighscore", async (ctx) => {
   }
 });
 
+app.use(oakCors());
 app.use(router.routes());
 app.use(router.allowedMethods());
 
