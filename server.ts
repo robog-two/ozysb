@@ -19,7 +19,12 @@ router.get("/highscores", async (ctx) => {
 
 router.post("/setnewhighscore", async (ctx) => {
   try {
-    const player = ctx.request.body as unknown as Player;
+    const json = await ctx.request.body.json();
+    if (json.username === undefined || json.score === undefined) {
+      ctx.response.status = 500;
+      return;
+    }
+    const player: Player = { username: json.username, score: json.score };
     await kv.set(["players", player.username], player)
     ctx.response.status = 200;
   } catch (e: any) {
