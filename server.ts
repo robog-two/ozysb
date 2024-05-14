@@ -14,7 +14,28 @@ router.get("/", (ctx) => {
 });
 
 router.get("/highscores", async (ctx) => {
-  ctx.response.body = await kv.list({ prefix: ["players"] });
+  const response = { one: { score: 0 }, two: { score: 0 }, three: { score: 0 } };
+  const records = kv.list({ prefix: ["players"] });
+  const list: Player[] = [];
+  for await (const pair of records) {
+    list.push(pair.value as Player);
+  }
+
+  for (const pair of list) {
+    if (pair.score > response.one.score) {
+      response.one = pair;
+      break;
+    }
+    if (pair.score > response.two.score) {
+      response.two = pair;
+      break;
+    }
+    if (pair.score > response.three.score) {
+      response.three = pair;
+      break;
+    }
+  }
+  ctx.response.body = response;
 });
 
 router.post("/setnewhighscore", async (ctx) => {
