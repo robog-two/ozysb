@@ -46,7 +46,10 @@ router.post("/setnewhighscore", async (ctx) => {
       return;
     }
     const player: Player = { username: json.username, score: json.score };
-    await kv.set(["players", player.username], player)
+    const pastScore = ((await kv.get([ "players", player.username ]))?.value as Player)?.score;
+    if (pastScore && pastScore < player.score) {
+      await kv.set(["players", player.username], player)
+    }
     ctx.response.status = 200;
   } catch (e: any) {
     console.log(e);
