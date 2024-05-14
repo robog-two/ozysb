@@ -15,14 +15,14 @@ router.get("/", (ctx) => {
 
 router.get("/highscores", async (ctx) => {
   const response = { one: { score: 0 }, two: { score: 0 }, three: { score: 0 } };
-  const records = await kv.list({ prefix: ["players"] });
+  const records = kv.list({ prefix: ["players"] });
   const list: Player[] = [];
   for await (const pair of records) {
     list.push(pair.value as Player);
   }
+  console.log(list);
 
   for (const pair of list) {
-    console.log(pair);
     if (pair.score >= response.one.score) {
       response.three = response.two;
       response.two = response.one;
