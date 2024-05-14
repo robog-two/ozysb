@@ -22,18 +22,19 @@ router.get("/highscores", async (ctx) => {
   }
 
   for (const pair of list) {
-    if (pair.score > response.one.score) {
+    console.log(pair);
+    if (pair.score >= response.one.score) {
       response.three = response.two;
       response.two = response.one;
       response.one = pair;
       break;
     }
-    if (pair.score > response.two.score) {
+    if (pair.score >= response.two.score) {
       response.three = response.two;
       response.two = pair;
       break;
     }
-    if (pair.score > response.three.score) {
+    if (pair.score >= response.three.score) {
       response.three = pair;
       break;
     }
