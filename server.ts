@@ -27,16 +27,11 @@ router.get("/highscores", async (ctx) => {
       response.three = response.two;
       response.two = response.one;
       response.one = pair;
-      break;
-    }
-    if (pair.score >= response.two.score) {
+    } else if (pair.score >= response.two.score) {
       response.three = response.two;
       response.two = pair;
-      break;
-    }
-    if (pair.score >= response.three.score) {
+    } else if (pair.score >= response.three.score) {
       response.three = pair;
-      break;
     }
   }
   ctx.response.body = response;
